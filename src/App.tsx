@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import SearchFilters from './components/SearchFilters';
 import CompanyTable from './components/CompanyTable';
+import AIPanel from './components/AIPanel';
 import ModalBackdrop from './components/ModalBackdrop';
 import ConditionInputStep from './components/ConditionInputStep';
 import PatternConfirmStep from './components/PatternConfirmStep';
@@ -23,6 +24,10 @@ const PAGE_SIZE = 10;
 function App() {
   // Sidebar
   const [activeListId, setActiveListId] = useState('list4');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // AI mode
+  const [aiMode, setAiMode] = useState(false);
 
   // Table selection
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -165,10 +170,15 @@ function App() {
       <Header />
 
       <div className="flex flex-1 min-h-0">
-        <Sidebar activeListId={activeListId} onSelectList={setActiveListId} />
+        <Sidebar
+          activeListId={activeListId}
+          onSelectList={setActiveListId}
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={() => setSidebarCollapsed((v) => !v)}
+        />
 
-        <main className="flex-1 flex flex-col min-h-0">
-          <SearchFilters />
+        <main className="flex-1 flex flex-col min-h-0 min-w-0">
+          <SearchFilters aiMode={aiMode} />
 
           {/* AI Exclusion button row + table header area */}
           <div className="px-4 py-2 flex items-center justify-between border-b border-gray-200">
@@ -213,7 +223,8 @@ function App() {
               </label>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-gray-800">{mockCompanies.length}社</span>
+              <span className="text-xs text-gray-400">合計</span>
+              <span className="font-bold text-gray-800">4,438,728社</span>
 
               <button className="px-4 py-1.5 bg-orange-500 text-white text-sm rounded font-medium hover:bg-orange-600 transition-colors flex items-center gap-1">
                 {selectedCount}社をダウンロード 📥
@@ -258,6 +269,9 @@ function App() {
             </div>
           </div>
         </main>
+
+        {/* AI Side Panel */}
+        <AIPanel aiMode={aiMode} onAiModeChange={setAiMode} />
       </div>
 
       {/* ===== MODAL SYSTEM ===== */}

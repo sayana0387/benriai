@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, claude/add-ai-exclusion-feature-I4mYH]
+    branches: [main, claude/add-ai-exclusion-feature-I4mYH, claude/add-ai-side-panel-jg8JT]
   workflow_dispatch:
 
 permissions:
